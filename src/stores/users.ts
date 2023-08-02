@@ -26,40 +26,42 @@ export const useUserStore = defineStore('main', {
     }) as StoreDataType,
   actions: {
     async getUsers(url: string) {
+      this.isLoading = true
+      this.error = ''
       try {
-        this.isLoading = true
-        this.error = ''
         const result = await fetch(url)
-        const data = await result.json()
-        this.isLoading = false
         if (!result.ok) {
           throw new Error('Something went wrong')
         }
+
+        const data = await result.json()
         if (data) {
           this.users = data
           this.searchedData = data
         }
       } catch (error: any) {
-        this.isLoading = false
         this.error = error.message
+      } finally {
+        this.isLoading = false
       }
     },
     async getUser(url: string) {
+      this.isLoading = true
+      this.error = ''
       try {
-        this.isLoading = true
-        this.error = ''
         const result = await fetch(url)
-        const data = await result.json()
-        this.isLoading = false
         if (!result.ok) {
           throw new Error('Something went wrong')
         }
+
+        const data = await result.json()
         if (data) {
           this.user = data[0]
         }
       } catch (error: any) {
-        this.isLoading = false
         this.error = error.message
+      } finally {
+        this.isLoading = false
       }
     },
     searchUser(query: string) {
